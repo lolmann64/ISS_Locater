@@ -2,6 +2,12 @@ import requests
 import folium
 import time
 import sys
+import datetime
+
+
+def date_time():
+    ct = datetime.datetime.now()
+    return ct.strftime("%d/%m/%Y %H:%M:%S")
 
 
 def exit_program():         #exit
@@ -15,7 +21,7 @@ def acquire_iss_location():     #location der ISS herrausfinden durch API
     longitude = float(data["iss_position"]["longitude"])
     return latitude, longitude
 iss_latitude, iss_longitude = acquire_iss_location()
-print(f"ISS aktueller Standort:\n Latitude: {iss_latitude}, Longitude: {iss_longitude}")
+#print(f"ISS aktueller Standort:\n Latitude: {iss_latitude}, Longitude: {iss_longitude}")
 
 def generate_iss_map(latitude, longitude):      #map generieren mit folium. Latitude und Longitude parameter mitgegeben
     iss_map = folium.Map(location=[latitude, longitude], zoom_start=2)
@@ -25,6 +31,7 @@ def generate_iss_map(latitude, longitude):      #map generieren mit folium. Lati
 while True:     #automatisirung. Ertslle X sekunden eine map und poste standort
     iss_latitude, iss_longitude = acquire_iss_location()
     print(f"ISS aktueller Standort:\n Latitude: {iss_latitude}, Longitude: {iss_longitude}")
+    print(date_time())
     iss_map = generate_iss_map(iss_latitude, iss_longitude)
     iss_map.save("iss_map.html")
     #print("XuXuXuXuXUXu")
